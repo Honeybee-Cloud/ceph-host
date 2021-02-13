@@ -17,5 +17,9 @@ Vagrant.configure("2") do |config|
         master.vm.provision "ansible" do |ansible|
             ansible.playbook = "ceph-playbook.yml"
         end
+
+        master.vm.disk :disk, size: "100GB", name: "osd1"
+        master.vm.disk :disk, size: "100GB", name: "osd2"
+        master.vm.disk :disk, size: "100GB", name: "osd3"
     end
 end

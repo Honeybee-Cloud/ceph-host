@@ -55,7 +55,7 @@
 
   - name: Creates root ssh directory
     file:
-      path: /home/root/.ssh
+      path: /root/.ssh
       state: directory
       owner: root
       group: root
@@ -64,10 +64,10 @@
   - name: Add authorized key for root
     copy:
       src: credentials/id_rsa.pub
-      dest: /home/root/.ssh/authorized_keys
+      dest: /root/.ssh/authorized_keys
       owner: root
       group: root
-      mode: 0644
+      mode: 0600
 
   - name: Remove swapfile from /etc/fstab
     mount:
