@@ -63,7 +63,7 @@
 
   - name: Add authorized key for root
     copy:
-      src: credentials/id_rsa.pub
+      src: credentials/authorized_keys
       dest: /root/.ssh/authorized_keys
       owner: root
       group: root
