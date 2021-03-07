@@ -1,5 +1,4 @@
-IMAGE_NAME = "peru/my_ubuntu-20.04-server-amd64"
-IMAGE_VERSION = "20210222.01"
+IMAGE_NAME = "debian/buster64"
 N = 2
 
 Vagrant.configure("2") do |config|
@@ -11,12 +10,11 @@ Vagrant.configure("2") do |config|
         libvirt.cpus = 4
     end
       
-    config.vm.define "hnyb-host" do |master|
-        master.vm.box = IMAGE_NAME
-        config.vm.box_version = IMAGE_VERSION
-        master.vm.network "public_network", ip: "10.149.69.69", bridge: "eno1", dev: "eno1"
-        master.vm.hostname = "honeybee"
-        master.vm.provision "ansible" do |ansible|
+    config.vm.define "hnyb-host" do |node0|
+        node0.vm.box = IMAGE_NAME
+        node0.vm.network "public_network", :type => "bridge", ip: "10.149.69.70", bridge: "br0", dev: "br0", mode: "bridge"
+        node0.vm.hostname = "honeybee-vm0"
+        node0.vm.provision "ansible" do |ansible|
             ansible.playbook = "playbook.yml"
         end
     end
