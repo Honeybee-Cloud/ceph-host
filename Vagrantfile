@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
       
     config.vm.define "hnyb-host" do |node0|
         node0.vm.box = IMAGE_NAME
-        node0.vm.network "public_network", :type => "bridge", ip: "10.149.69.70", bridge: "br0", dev: "br0", mode: "bridge"
+        node0.vm.network "public_network", :type => "bridge", bridge: "br0", dev: "br0", mode: "bridge"
         node0.vm.hostname = "honeybee-vm0"
         node0.vm.provision "ansible" do |ansible|
             ansible.playbook = "playbook.yml"
