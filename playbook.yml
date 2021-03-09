@@ -22,7 +22,7 @@
 
   - name: Add apt repository for stable version
     apt_repository:
-      repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian buster stable
+      repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
       state: present
 
   - name: Install docker and its dependecies
