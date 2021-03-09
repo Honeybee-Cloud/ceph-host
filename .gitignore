@@ -1,3 +1,4 @@
 credentials/
 .vagrant/
 .git/
+*.retry
