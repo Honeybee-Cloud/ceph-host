@@ -1,0 +1,12 @@
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp2s0:
+      dhcp4: true
+      dhcp6: true
+  bridges:
+    br0:
+      dhcp4: true
+      dhcp6: true
+      interfaces: [ enp2s0 ]
