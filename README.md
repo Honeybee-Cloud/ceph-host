@@ -1,10 +1,18 @@
-This repo contains code for deploying a HNYB Node VM on libvirt. 
+This repo contains code for deploying a HNYB Node VM on libvirt or virtualbox. 
 
 ## USAGE
 
-You will need a Linux system with libvirt and Vagrant installed along with some other utilities.
+You will need a Linux system with either libvirt or virtualbox and Vagrant installed along with some other utilities.
 
 On VM Host:
+
+Copy/Append the interfaces or 02-hnyb-libvirt-vm.yaml files depending on your distro.
+
+On Ubuntu do:
+`sudo cp 02-hnyb-libvirt-vm.yaml /etc/netplan/`
+`sudo netplan generate`
+`sudo netplan apply`
+
 `git clone https://github.com/Honeybee-Cloud/hnyb-host`
 `cd hnyb-host`
 `vagrant up`
