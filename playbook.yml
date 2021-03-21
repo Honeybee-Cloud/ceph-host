@@ -15,7 +15,8 @@
       - gnupg
       - git
 
-  - name: Install microk8s with option --classic
+# install with `ansible-galaxy collection install community.general`
+  - name: Install microk8s with option classic
     community.general.snap:
       name: microk8s
       classic: yes

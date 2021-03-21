@@ -1,4 +1,4 @@
-IMAGE_NAME = "debian/buster64"
+IMAGE_NAME = "bento/ubuntu-20.04"
 
 N = 2
 
