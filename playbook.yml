@@ -15,43 +15,10 @@
       - gnupg
       - git
 
-  - name: Add an apt signing key for Docker
-    apt_key:
-      url: https://download.docker.com/linux/debian/gpg
-      state: present
-
-  - name: Add apt repository for stable version
-    apt_repository:
-      repo: deb [arch=amd64] https://download.docker.com/linux/debian buster stable
-      state: present
-
-  - name: Install docker and its dependecies
-    apt: 
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-    vars:
-      packages:
-      - docker-ce=5:19.03.15~3-0~debian-buster
-      - docker-ce-cli=5:19.03.15~3-0~debian-buster
-      - containerd.io
-    notify:
-      - docker status
-
-  - name: Copy docker daemon config
-    copy:
-      src: daemon.json
-      dest: /etc/docker/daemon.json
-
-  - name: Restart docker
-    systemd: 
-      state: restarted
-      name: docker
-
-  - name: Add vagrant user to docker group
-    user:
-      name: vagrant
-      group: docker
+  - name: Install microk8s with option --classic
+    community.general.snap:
+      name: microk8s
+      classic: yes
 
   - name: Creates root ssh directory
     file:
@@ -68,48 +35,3 @@
       owner: root
       group: root
       mode: 0600
-
-  - name: Remove swapfile from /etc/fstab
-    mount:
-      name: "{{ item }}"
-      fstype: swap
-      state: absent
-    with_items:
-      - swap
-      - none
-
-  - name: Disable swap
-    command: swapoff -a
-    when: ansible_swaptotal_mb > 0
-
-  - name: Add an apt signing key for Kubernetes
-    apt_key:
-      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-      state: present
-
-  - name: Adding apt repository for Kubernetes
-    apt_repository:
-      repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
-      state: present
-      filename: kubernetes.list
-
-  - name: Install Kubernetes binaries
-    apt: 
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-    vars:
-      packages:
-        - kubelet 
-        - kubeadm 
-        - kubectl
-
-  - name: Restart kubelet
-    service:
-      name: kubelet
-      daemon_reload: yes
-      state: restarted
-
-  handlers:
-  - name: docker status
-    service: name=docker state=started
