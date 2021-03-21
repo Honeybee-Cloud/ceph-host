@@ -2,37 +2,41 @@
 - hosts: all
   become: yes
   tasks:
-  - name: Install packages that allow apt to be used over HTTPS
-    apt:
-      name: "{{ packages }}"
-      state: present
-      update_cache: yes
-    vars:
-      packages:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg
-      - git
-
-# install with `ansible-galaxy collection install community.general`
+  # install with `ansible-galaxy collection install community.general`
   - name: Install microk8s with option classic
     community.general.snap:
       name: microk8s
       classic: yes
 
-  - name: Creates root ssh directory
+  - name: Create honeybee group
+    ansible.builtin.group:
+      name: honeybee
+      state: present
+
+  - name: Add Honeybee user
+    user:
+      name: honeybee
+      groups: honeybee, microk8s
+
+  - name: Change ownership of honeybee .kube folder
     file:
-      path: /root/.ssh
+      path: /home/honeybee/.kube
+      owner: honeybee
+      group: honeybee
+      recurse: yes
+
+  - name: Creates honeybee ssh directory
+    file:
+      path: /home/honeybee/.ssh
       state: directory
-      owner: root
-      group: root
+      owner: honeybee
+      group: honeybee
       mode: 0700
 
-  - name: Add authorized key for root
+  - name: Add authorized key for honeybee
     copy:
       src: credentials/authorized_keys
-      dest: /root/.ssh/authorized_keys
-      owner: root
-      group: root
+      dest: /home/honeybee/.ssh/authorized_keys
+      owner: honeybee
+      group: honeybee
       mode: 0600
